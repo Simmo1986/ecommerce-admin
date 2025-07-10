@@ -1,4 +1,5 @@
 import DashboardLayout from "../components/layout/DashboardLayout";
+import RecentOrders from "../components/RecentOrders";
 import StatCard from "../components/StatCard";
 import { mockStats } from "../data/mockStats";
 
@@ -10,6 +11,7 @@ export default function Dashboard() {
         {mockStats.map((stat, idx) => (
           <StatCard key={idx} title={stat.title} value={stat.value} />
         ))}
+        <RecentOrders />
       </div>
     </DashboardLayout>
   );
