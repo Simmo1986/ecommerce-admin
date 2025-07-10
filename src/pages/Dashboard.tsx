@@ -1,0 +1,16 @@
+import DashboardLayout from "../components/layout/DashboardLayout";
+import StatCard from "../components/StatCard";
+import { mockStats } from "../data/mockStats";
+
+export default function Dashboard() {
+  return (
+    <DashboardLayout>
+      <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {mockStats.map((stat, idx) => (
+          <StatCard key={idx} title={stat.title} value={stat.value} />
+        ))}
+      </div>
+    </DashboardLayout>
+  );
+}
