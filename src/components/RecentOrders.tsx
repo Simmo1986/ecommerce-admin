@@ -10,9 +10,12 @@ export default function RecentOrders() {
       <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
       <ul className="divide-y divide-gray-200">
         {orders.map((order) => (
-          <li key={order.id} className="py-2 flex justify-between">
-            <span>{order.customer}</span>
-            <span className="text-gray-500">${order.total.toFixed(2)}</span>
+          <li key={order.id} className="py-2">
+            <div className="flex justify-between">
+              <span className="font-medium">{order.customer}</span>
+              <span className="text-gray-500">${order.total.toFixed(2)}</span>
+            </div>
+            <div className="text-sm text-gray-400">{order.createdAt}</div>
           </li>
         ))}
       </ul>
