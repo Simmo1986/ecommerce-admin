@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Spinner from "./Spinner";
 
 type Product = {
   id: string;
@@ -39,8 +40,8 @@ export default function TopProducts() {
     <div className="bg-white p-4 shadow rounded-xl">
       <h2 className="text-xl font-semibold mb-4">Top Products</h2>
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
-      ) : (
+        <Spinner />
+        ) : (
         <ul className="divide-y divide-gray-200">
           {products.map((product) => (
             <li key={product.id} className="py-2 flex justify-between">

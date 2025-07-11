@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
+import DashboardLayout from "../components/layout/DashboardLayout";
+import Spinner from "../components/Spinner";
 
+// Type definition for each order in the list.
+// Helps TypeScript enforce correct property usage.
 type Order = {
   id: string;
   customer: string;
@@ -8,40 +12,53 @@ type Order = {
 };
 
 export default function OrdersPage() {
+  // State to hold the list of orders
   const [orders, setOrders] = useState<Order[]>([]);
+  // State to manage whether data is still loading
   const [loading, setLoading] = useState(true);
 
+  // useEffect is called once when the component mounts
   useEffect(() => {
     const fetchOrders = async () => {
       try {
+        // Fetch data from the mock API
         const res = await fetch("https://6870ae0b7ca4d06b34b788bd.mockapi.io/api/v1/Orders");
         const data = await res.json();
 
+        // Map raw data into a consistent format based on our type
         const mapped = data.map((order: any) => ({
           id: order.id,
-          customer: order.Customer || "Unknown",
-          total: parseFloat(order.Total || 0),
-          createdAt: new Date(order.createdAt * 1000).toLocaleDateString(),
+          customer: order.Customer || "Unknown", // fallback if customer name is missing
+          total: parseFloat(order.Total || 0),   // convert total from string to number
+          createdAt: new Date(order.createdAt * 1000).toLocaleDateString(), // convert UNIX timestamp to readable date
         }));
 
+        // Update state with the cleaned and formatted data
         setOrders(mapped);
       } catch (error) {
+        // Handle any fetch or parsing errors
         console.error("Failed to fetch orders:", error);
         setOrders([]);
       } finally {
+        // Stop showing the spinner whether fetch succeeded or failed
         setLoading(false);
       }
     };
 
+    // Invoke the fetch function
     fetchOrders();
-  }, []);
+  }, []); // Empty dependency array means this runs only once on first render
 
   return (
-    <div className="p-6">
+    // Dashboard layout includes the sidebar and top navigation
+    <DashboardLayout>
       <h1 className="text-2xl font-bold mb-4">All Orders</h1>
+
+      {/* If we're still loading, show a spinner component */}
       {loading ? (
-        <p className="text-gray-500">Loading orders...</p>
+        <Spinner />
       ) : (
+        // Table layout for displaying order data
         <div className="overflow-x-auto bg-white shadow rounded-xl">
           <table className="min-w-full divide-y divide-gray-200 text-sm">
             <thead className="bg-gray-50">
@@ -65,6 +82,6 @@ export default function OrdersPage() {
           </table>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   );
 }
